@@ -51,7 +51,7 @@ import {
   resolveDiscordGuildEntry,
   resolveDiscordUserAllowed,
 } from "./allow-list.js";
-import { formatDiscordUserTag } from "./format.js";
+import { resolveDiscordSenderIdentity } from "./sender-identity.js";
 import { resolveDiscordChannelInfo } from "./message-utils.js";
 import { resolveDiscordThreadParentInfo } from "./threading.js";
 
@@ -526,6 +526,7 @@ async function dispatchDiscordCommandInteraction(params: {
   if (!user) {
     return;
   }
+  const sender = resolveDiscordSenderIdentity({ author: user, pluralkitInfo: null });
   const channel = interaction.channel;
   const channelType = channel?.type;
   const isDirectMessage = channelType === ChannelType.DM;
@@ -540,13 +541,14 @@ async function dispatchDiscordCommandInteraction(params: {
   const ownerAllowList = normalizeDiscordAllowList(discordConfig?.dm?.allowFrom ?? [], [
     "discord:",
     "user:",
+    "pk:",
   ]);
   const ownerOk =
     ownerAllowList && user
       ? allowListMatches(ownerAllowList, {
-          id: user.id,
-          name: user.username,
-          tag: formatDiscordUserTag(user),
+          id: sender.id,
+          name: sender.name,
+          tag: sender.tag,
         })
       : false;
   const guildInfo = resolveDiscordGuildEntry({
@@ -619,12 +621,12 @@ async function dispatchDiscordCommandInteraction(params: {
     if (dmPolicy !== "open") {
       const storeAllowFrom = await readChannelAllowFromStore("discord").catch(() => []);
       const effectiveAllowFrom = [...(discordConfig?.dm?.allowFrom ?? []), ...storeAllowFrom];
-      const allowList = normalizeDiscordAllowList(effectiveAllowFrom, ["discord:", "user:"]);
+      const allowList = normalizeDiscordAllowList(effectiveAllowFrom, ["discord:", "user:", "pk:"]);
       const permitted = allowList
         ? allowListMatches(allowList, {
-            id: user.id,
-            name: user.username,
-            tag: formatDiscordUserTag(user),
+            id: sender.id,
+            name: sender.name,
+            tag: sender.tag,
           })
         : false;
       if (!permitted) {
@@ -634,8 +636,8 @@ async function dispatchDiscordCommandInteraction(params: {
             channel: "discord",
             id: user.id,
             meta: {
-              tag: formatDiscordUserTag(user),
-              name: user.username ?? undefined,
+              tag: sender.tag,
+              name: sender.name,
             },
           });
           if (created) {
@@ -662,9 +664,9 @@ async function dispatchDiscordCommandInteraction(params: {
     const userOk = hasUserAllowlist
       ? resolveDiscordUserAllowed({
           allowList: channelUsers,
-          userId: user.id,
-          userName: user.username,
-          userTag: formatDiscordUserTag(user),
+          userId: sender.id,
+          userName: sender.name,
+          userTag: sender.tag,
         })
       : false;
     const authorizers = useAccessGroups
@@ -769,7 +771,7 @@ async function dispatchDiscordCommandInteraction(params: {
     SenderName: user.globalName ?? user.username,
     SenderId: user.id,
     SenderUsername: user.username,
-    SenderTag: formatDiscordUserTag(user),
+    SenderTag: sender.tag,
     Provider: "discord" as const,
     Surface: "discord" as const,
     WasMentioned: true,

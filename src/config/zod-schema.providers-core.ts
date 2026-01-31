@@ -277,6 +277,13 @@ export const DiscordAccountSchema = z
       })
       .strict()
       .optional(),
+    pluralkit: z
+      .object({
+        enabled: z.boolean().optional(),
+        token: z.string().optional(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 
