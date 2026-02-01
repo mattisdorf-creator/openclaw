@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=OpenClaw AutoPlay (watcher)
+Comment=Startet den OpenClaw AutoPlay watcher (schickt #script autoplay beim Weltstart)
+Exec=$HOME/.local/bin/openclaw-autostart
+Icon=applications-games
+Terminal=false
+Categories=Game;Utility;
+StartupNotify=false

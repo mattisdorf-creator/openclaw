@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenClaw AutoPlay watcher (per-user)
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/openclaw-autostart
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

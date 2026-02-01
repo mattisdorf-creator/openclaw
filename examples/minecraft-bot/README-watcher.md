@@ -26,3 +26,21 @@ Troubleshooting
 - If Baritone is not installed: download a Fabric build from https://github.com/cabaletta/baritone/releases and place it into `~/.minecraft/mods/` then restart Minecraft.
 
 If you want, I can create a desktop launcher so the watcher starts automatically when you login — say "Launcher bitte".
+
+### Desktop launcher & autostart (one‑liner)
+
+To install the launcher and enable autostart for your user, run (after you extracted the package to ~/openclaw-autoplay):
+
+```bash
+cd ~/openclaw-autoplay/launchers || true
+chmod +x install-launcher.sh && ./install-launcher.sh
+# start now and enable at login:
+systemctl --user enable --now openclaw-autoplay.service
+```
+
+The launcher will appear as “OpenClaw AutoPlay (watcher)” in your application menu. To remove it:
+
+```bash
+systemctl --user disable --now openclaw-autoplay.service || true
+rm -f ~/.local/bin/openclaw-autostart ~/.local/share/applications/openclaw-autoplay.desktop ~/.config/systemd/user/openclaw-autoplay.service
+```
