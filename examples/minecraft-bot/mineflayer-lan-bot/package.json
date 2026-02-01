@@ -1,0 +1,12 @@
+{
+  "name": "openclaw-mineflayer-lan-bot",
+  "version": "0.1.0",
+  "description": "LAN bot fallback for OpenClaw autoplay (connects to singleplayer opened to LAN).",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "mineflayer": "^4.7.0"
+  }
+}
