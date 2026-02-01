@@ -29,8 +29,9 @@ Speedrun mode (AGGRESSIVE, use only on singleplayer)
 
 Quick autocraft hook (new)
 - You can now invoke a client command: `/openclaw craft <recipe>` (example: `/openclaw craft bucket`).
-  - Baritone scripts may call the slash command; the client mod will forward a safe chat token (`openclaw_request craft <recipe>`) so the Mineflayer LAN fallback or the watcher can perform the craft immediately.
-  - This is a pragmatic bridge: direct packet-based client crafting (no fallback) is planned next in the sprint.
+  - Baritone scripts may call the slash command; the client mod will first attempt a small set of *direct client* crafts (no external helper required) and—if that fails—will forward `openclaw_request craft <recipe>` so the Mineflayer LAN fallback or the watcher can perform the craft.
+  - Supported *direct* (inventory) crafts in this release: **`stick`**, **`crafting_table`** (best-effort). Other recipes (bucket, furnace, stone_pickaxe) currently fall back to the Mineflayer/watcher handler.
+  - This is a pragmatic bridge: more recipes and a packet-based, mapping‑safe implementation are next in the sprint.
 
 One‑click launcher (creates a random seed world and starts everything) ✅
 
