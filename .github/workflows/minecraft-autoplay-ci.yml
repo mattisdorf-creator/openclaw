@@ -40,7 +40,11 @@ jobs:
 
       - name: Build mod (MC 1.20.4)
         working-directory: examples/minecraft-bot/fabric-autoplay
-        run: gradle assemble -PmcVersion=1.20.4 --no-daemon -x test --warning-mode=none
+        run: gradle assemble -PmcVersion=1.20.4 --no-daemon --warning-mode=none
+
+      - name: Run Java unit tests (mod)
+        working-directory: examples/minecraft-bot/fabric-autoplay
+        run: gradle test -PmcVersion=1.20.4 --no-daemon --warning-mode=none
 
       - name: Try build for latest (best-effort)
         working-directory: examples/minecraft-bot/fabric-autoplay
