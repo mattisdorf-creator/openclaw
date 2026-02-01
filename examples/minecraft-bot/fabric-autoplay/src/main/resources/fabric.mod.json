@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "openclaw-autoplay",
+  "version": "0.1.0",
+  "name": "OpenClaw - Minecraft AutoPlay (PoC)",
+  "description": "Auto‑runs a Baritone script on single‑player world load (proof of concept).",
+  "authors": ["openclaw"],
+  "contact": {
+    "homepage": "https://github.com/openclaw/openclaw"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "ai.openclaw.minecraft.AutoPlayMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.0",
+    "minecraft": "*"
+  }
+}

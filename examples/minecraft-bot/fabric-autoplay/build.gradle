@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'fabric-loom' version '1.2-SNAPSHOT'
+}
+
+group = 'ai.openclaw'
+version = '0.1.0'
+archivesBaseName = 'openclaw-autoplay'
+
+repositories {
+    mavenCentral()
+    maven { url = uri('https://maven.fabricmc.net/') }
+}
+
+def mcVersion = project.findProperty('mcVersion') ?: '1.20.4'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    // attempt to build against the requested MC version (may fail for very new versions if mappings/builds aren't available)
+    minecraft "com.mojang:minecraft:${mcVersion}"
+    // Best-effort mappings coordinate — some MC versions use different build numbers; build will fail early if not available.
+    mappings "net.fabricmc:yarn:${mcVersion}+build.1:v2"
+
+    // Fabric API (version may need to be adjusted for very new MC releases)
+    modImplementation "net.fabricmc:fabric-api:0.84.0+${mcVersion}"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+// basic jar naming convenience
+tasks.named('jar') {
+    archiveBaseName.set('openclaw-autoplay')
+    from('LICENSE') { into 'META-INF' }
+}

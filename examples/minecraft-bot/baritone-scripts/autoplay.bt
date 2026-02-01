@@ -1,0 +1,15 @@
+# Minimal example script for Baritone — PoC
+# This script is a starting point. Edit to improve / extend the playthrough.
+
+# 1) Early game: gather wood
+mine oak_log
+mine oak_log
+mine oak_log
+
+# 2) Get some stone
+mine stone
+mine stone
+
+# 3) Look for surface coal / cave (Baritone will pathfind)
+# (Baritone will try to find and mine nearby coal/iron as available)
+# If you want to run a longer sequence, expand this file with more commands.
