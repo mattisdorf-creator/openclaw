@@ -22,10 +22,10 @@ B) LAN fallback (no mods needed)
    pnpm install && node bot.js
 
 Speedrun mode (AGGRESSIVE, use only on singleplayer)
-- To enable: create an empty file named `SPEEDRUN` in the package folder (e.g. `~/openclaw-autoplay/SPEEDRUN`) or set env `SPEEDRUN=1` before launching `autostart-watcher.sh`.
-- Behavior: watcher will inject `#script speedrun` instead of `#script autoplay`. The included `baritone-scripts/speedrun.bt` is an aggressive PoC — iterate on your seed.
-- WARNING: speedrun mode is risky (fast, sometimes unsafe). Prefer a controlled singleplayer seed when testing.
-
+- To enable basic speedrun: create an empty file named `SPEEDRUN` in the package folder (e.g. `~/openclaw-autoplay/SPEEDRUN`) or set env `SPEEDRUN=1` before launching `autostart-watcher.sh`.
+- To enable the *deterministic* speedrun iteration (recommended for testing/iteration): create `SPEEDRUN_V2` or set `SPEEDRUN_V2=1` — the watcher will inject `#script speedrun_v2` and run the improved sequence.
+- Behavior: `speedrun_v2` prioritizes deterministic resource acquisition, fast portal build heuristics and pearl fallbacks. Use a dedicated test seed when iterating.
+- WARNING: speedrun modes are risky (fast, sometimes unsafe). Prefer a controlled singleplayer seed when testing.
 Troubleshooting
 - If watcher reports "xdotool not found": install it (`sudo apt install xdotool`) or run the chat command manually.  
 - If Baritone is not installed: download a Fabric build from https://github.com/cabaletta/baritone/releases and place it into `~/.minecraft/mods/` then restart Minecraft.

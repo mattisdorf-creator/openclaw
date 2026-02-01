@@ -1,0 +1,19 @@
+# portal_builder.bt — helper sequence to find lava and prepare a bucket‑style portal
+# Expectations: player or autocraft mod crafts a bucket when iron is available.
+# Usage: run as a subscript from a larger workflow (e.g. speedrun_v2.bt)
+
+# 1) Find surface lava pool
+find lava
+sleep 4
+# 2) Move to edge of lava and clear a 3x3 working area
+goto nearest lava
+sleep 2
+# attempt to clear blocks around the pool for safe bucket placement
+# (Baritone will break blocks as needed)
+# 3) If water is available, try to place water to create obsidian pool
+# Baritone's placement support varies; this step may require player assistance
+# 4) If obsidian found, build portal frame automatically (requires 'build' support)
+find obsidian
+sleep 2
+# 5) If obsidian incomplete, instruct player (in-script comment)
+# MANUAL: craft bucket, collect lava with bucket, place water to form obsidian, build portal

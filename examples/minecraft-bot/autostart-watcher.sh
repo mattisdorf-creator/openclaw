@@ -12,7 +12,9 @@ set -euo pipefail
 MC_LOG_DEFAULT="$HOME/.minecraft/logs/latest.log"
 MC_LOG="${1:-$MC_LOG_DEFAULT}"
 # choose command: speedrun if SPEEDRUN flag present, otherwise default to autoplay
-if [ -n "${SPEEDRUN:-}" ] || [ -f "$(pwd)/SPEEDRUN" ] || [ -f "$HOME/openclaw-autoplay/SPEEDRUN" ]; then
+if [ -n "${SPEEDRUN_V2:-}" ] || [ -f "$(pwd)/SPEEDRUN_V2" ] || [ -f "$HOME/openclaw-autoplay/SPEEDRUN_V2" ]; then
+  CHAT_COMMAND="#script speedrun_v2"
+elif [ -n "${SPEEDRUN:-}" ] || [ -f "$(pwd)/SPEEDRUN" ] || [ -f "$HOME/openclaw-autoplay/SPEEDRUN" ]; then
   CHAT_COMMAND="#script speedrun"
 else
   CHAT_COMMAND="#script autoplay"

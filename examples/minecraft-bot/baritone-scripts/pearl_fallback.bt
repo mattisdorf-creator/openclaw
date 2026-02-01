@@ -1,0 +1,11 @@
+# pearl_fallback.bt — try multiple pearl acquisition strategies
+# 1) Active enderman hunt (open areas/night)
+find enderman
+explore 128
+sleep 10
+# 2) If none found, search for villages with trades (manual interaction required)
+# 3) As last resort, expand search radius and prioritize night in open biomes
+explore 512
+sleep 30
+# 4) If still none, fallback to manual player assistance / seed change
+# NOTE: trading and villager manipulation is not handled by Baritone in vanilla setups.

@@ -1,0 +1,100 @@
+# speedrun_v2.bt — deterministic-first, speedrun-focused Baritone script (iteration 1)
+# Goals (prioritized):
+# 1) Starter kit -> stone tools -> furnace
+# 2) Fast iron for bucket -> portal by lava-pool (bucket method)
+# 3) Nether: fortress -> 7+ blaze rods
+# 4) Pearls: prioritized endermen farming; fallback to surface/night search
+# 5) Locate stronghold -> activate end portal -> enter The End
+#
+# Notes:
+# - This script is aggressive and contains explicit timeouts / retries.
+# - Several steps require either a crafting helper mod or player micro (crafting bucket, furnace).
+# - Use deterministic seed testing (see seed-harness/) to iterate reliably.
+
+# ---- helpers / configuration
+# runtime knobs (edit before running in Baritone by adding comments or modifying file):
+# MAX_IRON_ATTEMPTS: how many tries to look for iron before switching strategy
+# PEARL_TIMEOUT: how long (seconds) to hunt for pearls before fallback
+
+# ---------------------------
+# Phase: starter (very fast)
+# ---------------------------
+# quickly gather wood and surface resources
+break oak_log
+sleep 200
+# create basic stone tools (player/crafting helper required)
+# try to get surface stone/coal for furnace/smelting
+mine stone
+mine coal
+sleep 80
+
+# ---------------------------
+# Phase: rapid iron search (exposed/near-surface preferred)
+# ---------------------------
+# aggressively search caves/overhangs for iron
+# attempt multiple searches with increasing radius
+mine iron
+sleep 40
+explore 64
+sleep 40
+# retry short radius search
+explore 128
+sleep 40
+
+# If iron found, smelt & craft bucket (player or autocraft required)
+# Wait to allow player/autocraft to finish
+sleep 6
+# If no bucket present: attempt to locate obsidian (alternative portal)
+find obsidian
+sleep 4
+# ---------------------------
+# Phase: portal builder (bucket method preferred)
+# ---------------------------
+# locate a lava pool (surface) and prepare to build portal quickly
+find lava
+sleep 6
+# If lava found, attempt to position near it and instruct player to craft/use bucket
+# (Baritone cannot craft reliably across versions; require autocraft mod for full automation)
+# placeholder: goto the lava and mine nearby blocks to create a safe workspace
+goto nearest lava
+sleep 4
+explore 8
+sleep 2
+
+# ---------------------------
+# Phase: Nether objectives (fast fortress pathing)
+# ---------------------------
+# Once in Nether: find fortress quickly and collect blaze rods
+find fortress
+sleep 6
+# If fortress is found, attempt to path and collect blazes
+goto fortress
+sleep 6
+# explore inside fortress aggressively
+explore 48
+sleep 6
+# repeat blaze collection until we have enough
+# (Baritone will do the movement; player micro may be needed for combat quality)
+# ---------------------------
+# Phase: Ender Pearls (primary + fallback)
+# ---------------------------
+# Primary: hunt endermen at night / in open areas
+find enderman
+sleep 6
+explore 64
+sleep 20
+# Fallback: if no pearls after active hunt, expand search to swamp/desert/night areas
+explore 256
+sleep 30
+
+# ---------------------------
+# Phase: stronghold & end run
+# ---------------------------
+# Use locator if available; otherwise use Eyes of Ender (manual crafting expected)
+# Attempt a best-effort stronghold locate
+# (Baritone's 'locate' may be unavailable on some setups; manual help recommended)
+# placeholder for operator: 'locate stronghold' or use external locator
+# If stronghold found, path to portal and enter
+# ---------------------------
+# End notes: this script aims to be a deterministic-first blueprint —
+# iterate against a chosen seed and add small micro‑scripts for portal building, pearl farms, and combat micro.
