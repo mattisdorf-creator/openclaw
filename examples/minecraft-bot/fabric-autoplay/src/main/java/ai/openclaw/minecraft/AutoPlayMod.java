@@ -1,6 +1,9 @@
 package ai.openclaw.minecraft;
 
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v1.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.LiteralText;
@@ -39,6 +42,22 @@ public class AutoPlayMod implements ClientModInitializer {
                 }, "openclaw-autoplay-start").start();
             });
         });
+
+        // Client-side command bridge: /openclaw craft <recipe>
+        // - Safe: re-emits a chat token 'openclaw_request craft <recipe>' so the Mineflayer
+        //   LAN fallback (or the external watcher) can handle the craft immediately.
+        // - TODO: implement direct packet-based crafting (ServerboundContainerClickPacket)
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+            dispatcher.register(ClientCommandManager.literal("openclaw")
+                .then(ClientCommandManager.literal("craft")
+                    .then(ClientCommandManager.argument("recipe", StringArgumentType.word())
+                        .executes(ctx -> {
+                            String recipe = StringArgumentType.getString(ctx, "recipe");
+                            MinecraftClient mc = MinecraftClient.getInstance();
+                            mc.execute(() -> handleCraftRequest(mc, recipe));
+                            return 1;
+                        }))));
+        });
     }
 
     private void startWhenReady(MinecraftClient client) {
@@ -74,5 +93,38 @@ public class AutoPlayMod implements ClientModInitializer {
 
         // run the attempt off the client thread (we schedule user-visible messages on the client thread)
         new Thread(tryStart, "openclaw-autoplay-run").start();
+    }
+
+    // Handle craft requests originating from Baritone/one-click/watcher.
+    // Current behaviour: • emit a chat token that the Mineflayer fallback understands
+    //                    • show an in-game confirmation to the player
+    // Future: replace with direct, packet-based crafting for fully offline automation.
+    private void handleCraftRequest(MinecraftClient client, String recipe) {
+        if (client.player == null) return;
+        try {
+            client.player.sendMessage(new LiteralText("OpenClaw: craft request received -> " + recipe), false);
+            // Re-emit as a normalized chat token so existing fallbacks react the same way.
+            client.player.sendChatMessage("openclaw_request craft " + recipe);
+
+            // Quick local hints for common recipes (helpful for debugging / visual feedback)
+            switch (recipe.toLowerCase()) {
+                case "bucket":
+                    client.player.sendMessage(new LiteralText("OpenClaw: ensure a crafting table is available (bucket needs 3 iron)."), false);
+                    break;
+                case "crafting_table":
+                case "craftingtable":
+                    client.player.sendMessage(new LiteralText("OpenClaw: attempting player-craft (if 4 planks present)."), false);
+                    break;
+                case "stick":
+                    client.player.sendMessage(new LiteralText("OpenClaw: attempting quick craft for sticks."), false);
+                    break;
+                default:
+                    client.player.sendMessage(new LiteralText("OpenClaw: craft request forwarded — fallback handler will attempt it."), false);
+            }
+        } catch (Throwable t) {
+            // never crash the client; best-effort only
+            try { client.player.sendMessage(new LiteralText("OpenClaw: craft request failed (see log)"), false); } catch (Throwable ignored) {}
+            t.printStackTrace();
+        }
     }
 }

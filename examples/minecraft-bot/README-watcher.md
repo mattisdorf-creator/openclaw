@@ -27,6 +27,11 @@ Speedrun mode (AGGRESSIVE, use only on singleplayer)
 - Behavior: `speedrun_v2` prioritizes deterministic resource acquisition, fast portal build heuristics and pearl fallbacks. Use a dedicated test seed when iterating.
 - WARNING: speedrun modes are risky (fast, sometimes unsafe). Prefer a controlled singleplayer seed when testing.
 
+Quick autocraft hook (new)
+- You can now invoke a client command: `/openclaw craft <recipe>` (example: `/openclaw craft bucket`).
+  - Baritone scripts may call the slash command; the client mod will forward a safe chat token (`openclaw_request craft <recipe>`) so the Mineflayer LAN fallback or the watcher can perform the craft immediately.
+  - This is a pragmatic bridge: direct packet-based client crafting (no fallback) is planned next in the sprint.
+
 One‑click launcher (creates a random seed world and starts everything) ✅
 
 - If you want absolute "open the modpack → it starts", use the one‑click starter. It will:
