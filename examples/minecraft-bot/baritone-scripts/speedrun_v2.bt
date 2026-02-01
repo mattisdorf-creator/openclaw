@@ -8,7 +8,10 @@
 #
 # Notes:
 # - This script is aggressive and contains explicit timeouts / retries.
-# - Several steps require either a crafting helper mod or player micro (crafting bucket, furnace).
+# - Several steps require either a crafting helper (client mod / autocraft bridge) or player micro (examples: crafting bucket, furnace).
+#   - Baritone-friendly request (chat): `openclaw_request craft bucket`
+#   - Client‑command (preferred when using the Fabric mod): `/openclaw craft bucket` — the client mod will forward this to the fallback handler.
+#   - The Mineflayer LAN fallback and the one‑click starter both listen for the chat token and will attempt autocraft when available.
 # - Use deterministic seed testing (see seed-harness/) to iterate reliably.
 
 # ---- helpers / configuration

@@ -34,6 +34,28 @@ Categories=Game;Utility;
 StartupNotify=false
 EOF
 
+# also install the one‑click starter (creates a random seed world + triggers automation)
+if [ -f "$HERE/launchers/one_click_start.sh" ]; then
+  echo "Installiere One‑Click Starter to $BIN/openclaw-oneclick"
+  cat > "$BIN/openclaw-oneclick" <<'EOF'
+#!/usr/bin/env bash
+exec "$HOME/openclaw-autoplay/launchers/one_click_start.sh" "$@"
+EOF
+  chmod +x "$BIN/openclaw-oneclick"
+  echo "Installiere Desktop‑Launcher to $DESKTOP_DIR/openclaw-oneclick.desktop"
+  cat > "$DESKTOP_DIR/openclaw-oneclick.desktop" <<'EOF'
+[Desktop Entry]
+Type=Application
+Name=OpenClaw AutoPlay (one-click)
+Comment=Startet Minecraft, erstellt eine neue Welt mit Zufalls‑Seed und startet die Automation
+Exec=$HOME/.local/bin/openclaw-oneclick
+Icon=applications-games
+Terminal=false
+Categories=Game;Utility;
+StartupNotify=false
+EOF
+fi
+
 # systemd user unit
 echo "Installiere systemd user unit to $SERVICE_DIR/openclaw-autoplay.service"
 cat > "$SERVICE_DIR/openclaw-autoplay.service" <<'EOF'

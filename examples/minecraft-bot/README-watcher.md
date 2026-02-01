@@ -26,6 +26,31 @@ Speedrun mode (AGGRESSIVE, use only on singleplayer)
 - To enable the *deterministic* speedrun iteration (recommended for testing/iteration): create `SPEEDRUN_V2` or set `SPEEDRUN_V2=1` — the watcher will inject `#script speedrun_v2` and run the improved sequence.
 - Behavior: `speedrun_v2` prioritizes deterministic resource acquisition, fast portal build heuristics and pearl fallbacks. Use a dedicated test seed when iterating.
 - WARNING: speedrun modes are risky (fast, sometimes unsafe). Prefer a controlled singleplayer seed when testing.
+
+Quick autocraft hook (new)
+- You can now invoke a client command: `/openclaw craft <recipe>` (example: `/openclaw craft bucket`).
+  - Baritone scripts may call the slash command; the client mod will first attempt a small set of *direct client* crafts (no external helper required) and—if that fails—will forward `openclaw_request craft <recipe>` so the Mineflayer LAN fallback or the watcher can perform the craft.
+  - Supported *direct* (inventory) crafts in this release: **`stick`**, **`crafting_table`** (best-effort). Other recipes (stone_pickaxe, furnace) currently fall back to the Mineflayer/watcher handler by default.
+  - Packet‑based client crafting (bucket/furnace/etc.) is available behind the feature flag `OPENCLAW_ENABLE_PACKET_CRAFT=1` (experimental). When enabled the Fabric mod will attempt a best‑effort, mapping‑safe recipe placement before falling back to Mineflayer.
+  - This is a pragmatic bridge: more recipes and tougher mapping compatibility will land later in the sprint.
+
+One‑click launcher (creates a random seed world and starts everything) ✅
+
+- If you want absolute "open the modpack → it starts", use the one‑click starter. It will:
+  - generate a random seed, create a new singleplayer world (UI automation via `xdotool`),
+  - post the seed to chat for reproducibility, and
+  - send fallback chat triggers so Baritone or the Mineflayer fallback begin the run.
+- Quick start:
+  1) Install the package to `~/openclaw-autoplay` and run the installer:
+     ```bash
+     cd ~/openclaw-autoplay/launchers && chmod +x install-launcher.sh && ./install-launcher.sh
+     ```
+  2) Launch the one‑click starter (appears as "OpenClaw AutoPlay (one-click)") or run:
+     ```bash
+     openclaw-oneclick
+     ```
+  3) Requirements: `xdotool` + Fabric profile selected in the Minecraft launcher. If your client is localized, create the world once manually and then use `openclaw-oneclick --no-ui`.
+
 Troubleshooting
 - If watcher reports "xdotool not found": install it (`sudo apt install xdotool`) or run the chat command manually.  
 - If Baritone is not installed: download a Fabric build from https://github.com/cabaletta/baritone/releases and place it into `~/.minecraft/mods/` then restart Minecraft.

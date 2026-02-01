@@ -29,6 +29,13 @@ dependencies {
 
     // Fabric API (version may need to be adjusted for very new MC releases)
     modImplementation "net.fabricmc:fabric-api:0.84.0+${mcVersion}"
+
+    // Test deps (pure-Java helpers are unit-tested without requiring MC runtime)
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType(JavaCompile).configureEach {
