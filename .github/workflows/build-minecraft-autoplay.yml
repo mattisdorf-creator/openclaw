@@ -24,10 +24,12 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Build (use Gradle or system gradle)
-        # use gradle action which installs Gradle if wrapper missing
+      - name: Build (use Gradle in subproject or system gradle)
+        # run Gradle in the Fabric subproject (no wrapper at repo root) and provide a gradle version fallback
         uses: gradle/gradle-build-action@v2
         with:
+          working-directory: examples/minecraft-bot/fabric-autoplay
+          gradle-version: '8.4.1'
           arguments: clean build -PmcVersion=${{ github.event.inputs.mc_version || 'latest' }}
 
       - name: Upload mod JAR artifact
