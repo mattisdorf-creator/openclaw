@@ -1,0 +1,86 @@
+# speedrun.bt — aggressive, generic speedrun workflow (proof-of-concept)
+# IMPORTANT: this is a starting point for a speedrun; many steps are seed- and RNG-dependent
+# and require in-game micro-adjustments. Use on singleplayer only.
+
+# ---- Quick goals (high-level):
+# 1) Starter kit: wood -> stone tools -> pick -> furnace
+# 2) Fast iron & bucket (to make a Nether portal via lava-pool/bucket method)
+# 3) Enter Nether, find fortress, collect blaze rods
+# 4) Get ender pearls (endermen hunt / trade fallback)
+# 5) Craft eyes, find stronghold, run to end, kill Dragon
+
+# ---------------------------
+# Phase 1 — starter (very aggressive)
+# ---------------------------
+# gather wood quickly
+break oak_log
+sleep 300
+# make a crafting table (assumes Baritone will place and craft if configured)
+# mine some stone for tools
+mine stone
+mine stone
+sleep 100
+# craft stone pick (manual step if crafting not available to Baritone)
+# ---------------------------
+# Phase 2 — fast iron + bucket
+# ---------------------------
+# search for surface cave / exposed iron
+# Prefer surface caves/overhangs (faster than stripmining)
+# 'mine iron' will attempt to mine visible iron blocks
+mine iron
+mine iron
+# If no iron found, dig to a cave quickly
+# try quick cave search and then follow
+goto surface
+explore
+# ---------------------------
+# Phase 3 — portal via lava pool (bucket method)
+# ---------------------------
+# locate a nearby lava pool, mine nearby stone to get a bucket using iron
+# (Baritone cannot craft; user must ensure bucket crafted or use autocraft mod)
+# placeholder: attempt to find obsidian or lava
+find lava
+# If obsidian found, build portal; otherwise, dig to lava and place water (manual)
+# ---------------------------
+# Phase 4 — Nether objectives
+# ---------------------------
+# Once in Nether: find fortress, get blazes
+# Baritone can 'find fortress' in some builds; otherwise, use 'goto' with coords
+# Aggressive mode: long-range pathing allowed
+# try to find a fortress first
+find fortress
+# If fortress not found quickly, search for bastion/room with blazes
+explore
+# Kill blazes until ~10 rods
+# (combat quality depends on client; this is a request to the player/bot)
+# ---------------------------
+# Phase 5 — Eyes and Stronghold
+# ---------------------------
+# Return to overworld, gather ender pearls (endermen hunting) or use pearls from trades
+# Then craft Eyes of Ender and use 'locate stronghold' if available
+# Baritone's 'locate' support varies by version — may require manual help
+# placeholder commands:
+find enderman
+mine enderman
+# craft eyes (manual)
+# locate stronghold (manual or via locator mod)
+# goto <stronghold-entrance-coords>
+# ---------------------------
+# Phase 6 — End run
+# ---------------------------
+# Enter stronghold -> finish portal -> go to The End
+# Use end‑combat routine (tower breaking, crystal destruction)
+# These are extremely situational; prefer manual micro for the Dragon fight.
+# ---------------------------
+# NOTES & NEXT STEPS
+# - This script is intentionally minimal and aggressive; it documents the actions
+#   Baritone should attempt but will require iterating on specific seeds and
+#   client combat reliability.
+# - Next work items to make a true speedrun agent:
+#   1) deterministic seed testing harness
+#   2) scripted crafting (Autocraft mod or in‑mod crafting helper)
+#   3) customized Nether/Stronghold search heuristics
+#   4) combat micro (use a modified client or external controller)
+#   5) telemetry + auto‑retry on death
+#
+# To run now: put this file in ~/.minecraft/baritone/scripts/ or run in-chat: "#script speedrun" (if Baritone installed)

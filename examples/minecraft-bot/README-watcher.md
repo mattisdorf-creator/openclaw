@@ -21,6 +21,11 @@ B) LAN fallback (no mods needed)
 2. In the package's `mineflayer-lan-bot/` folder run:
    pnpm install && node bot.js
 
+Speedrun mode (AGGRESSIVE, use only on singleplayer)
+- To enable: create an empty file named `SPEEDRUN` in the package folder (e.g. `~/openclaw-autoplay/SPEEDRUN`) or set env `SPEEDRUN=1` before launching `autostart-watcher.sh`.
+- Behavior: watcher will inject `#script speedrun` instead of `#script autoplay`. The included `baritone-scripts/speedrun.bt` is an aggressive PoC — iterate on your seed.
+- WARNING: speedrun mode is risky (fast, sometimes unsafe). Prefer a controlled singleplayer seed when testing.
+
 Troubleshooting
 - If watcher reports "xdotool not found": install it (`sudo apt install xdotool`) or run the chat command manually.  
 - If Baritone is not installed: download a Fabric build from https://github.com/cabaletta/baritone/releases and place it into `~/.minecraft/mods/` then restart Minecraft.
