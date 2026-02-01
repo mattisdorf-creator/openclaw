@@ -1,12 +1,19 @@
 {
   "name": "openclaw-mineflayer-lan-bot",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "LAN bot fallback for OpenClaw autoplay (connects to singleplayer opened to LAN).",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node bot.js",
+    "combat": "node combat.js",
+    "autocraft": "node autocraft.js",
+    "test-seed": "node test_seed.js"
   },
   "dependencies": {
-    "mineflayer": "^4.7.0"
+    "mineflayer": "^4.7.0",
+    "mineflayer-pathfinder": "^1.0.1",
+    "mineflayer-pvp": "^1.0.0",
+    "prismarine-recipes": "^1.0.0",
+    "vec3": "^0.1.26"
   }
 }
