@@ -21,6 +21,17 @@ public class AutoPlayMod implements ClientModInitializer {
                 started = false;
                 if (client.player != null) client.player.sendMessage(new LiteralText("OpenClaw AutoPlay: Mod geladen — Autostart in ~2s"), false);
 
+                // If the launcher provided an OPENCLAW_SEED env var, echo it into chat for reproducibility.
+                try {
+                    String seed = System.getenv("OPENCLAW_SEED");
+                    if (seed != null && !seed.isEmpty() && client.player != null) {
+                        client.player.sendChatMessage("openclaw:seed " + seed);
+                        client.player.sendMessage(new LiteralText("OpenClaw: Seed posted to chat — " + seed), false);
+                    }
+                } catch (Throwable t) {
+                    // non-fatal; continue with normal startup
+                }
+
                 // delay off the client thread then execute start on the client thread to ensure world is ready
                 new Thread(() -> {
                     try { Thread.sleep(2000); } catch (InterruptedException ignored) {}

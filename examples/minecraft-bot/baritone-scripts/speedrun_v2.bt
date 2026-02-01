@@ -8,8 +8,9 @@
 #
 # Notes:
 # - This script is aggressive and contains explicit timeouts / retries.
-# - Several steps require either a crafting helper mod or player micro (crafting bucket, furnace).
-# - Use deterministic seed testing (see seed-harness/) to iterate reliably.
+# - Several steps require either a crafting helper mod or player micro (crafting bucket, furnace).  - Example: the script can request the client/bot to craft a `bucket` by sending the chat message:
+    `openclaw_request craft bucket`
+    (the Mineflayer fallback and the one‑click starter listen for this and will attempt autocraft).# - Use deterministic seed testing (see seed-harness/) to iterate reliably.
 
 # ---- helpers / configuration
 # runtime knobs (edit before running in Baritone by adding comments or modifying file):
