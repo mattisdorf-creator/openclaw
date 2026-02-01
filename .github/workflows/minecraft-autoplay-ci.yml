@@ -33,9 +33,10 @@ jobs:
             ~/.gradle/wrapper
           key: gradle-cache-${{ runner.os }}-v1
 
-      - name: Install Gradle CLI
+      - name: Install Gradle CLI (fallback when no root gradle wrapper)
         uses: gradle/gradle-build-action@v2
         with:
+          gradle-version: '9.2.1'
           arguments: -v
 
       - name: Build mod (MC 1.20.4)
